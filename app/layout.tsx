@@ -18,15 +18,17 @@ export const metadata: Metadata = {
   description: 'Crypto Screener App with a built-in High-Frequency Terminal & Dashboard',
 };
 
-export default function RootLayout({ children, }: Readonly<{
+export default function RootLayout({
+  children,
+}: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-      <html lang="en" className="dark">
+    <html lang="en" className="dark">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-      <Header />
-      {children}
+        <Header />
+        {children}
       </body>
-      </html>
+    </html>
   );
 }
