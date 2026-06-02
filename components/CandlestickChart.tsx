@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, useTransition } from 'react';
 import { getCandlestickConfig, getChartConfig, PERIOD_BUTTONS, PERIOD_CONFIG } from '@/constants';
 import { CandlestickSeries, createChart, IChartApi, ISeriesApi } from 'lightweight-charts';
-import { fetcher } from '@/lib/coingecko.action';
+import { fetcher } from '../lib/coingecko.actions';
 import { convertOHLCData } from '@/lib/utils';
 
 const CandlestickChart = ({
