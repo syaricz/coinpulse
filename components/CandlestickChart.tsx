@@ -31,9 +31,11 @@ const CandlestickChart = ({
   const [period, setPeriod] = useState(initialPeriod);
   const [ohlcData, setOhlcData] = useState<OHLCData[]>(data ?? []);
   const [isPending, startTransition] = useTransition();
+  const latestRequestIdRef = useRef(0);
 
   const fetchOHLCData = async (selectedPeriod: Period) => {
     const { days } = PERIOD_CONFIG[selectedPeriod];
+    const requestId = ++latestRequestIdRef.current;
 
     try {
       const newData = await fetcher<OHLCData[]>(`/coins/${coinId}/ohlc`, {
@@ -41,9 +43,11 @@ const CandlestickChart = ({
         vs_currency: 'usd',
       });
 
-      startTransition(() => {
-        setOhlcData(newData ?? []);
-      });
+      if (requestId === latestRequestIdRef.current) {
+        startTransition(() => {
+          setOhlcData(newData ?? []);
+        });
+      }
     } catch (e) {
       console.error('Error fetching OHLC data:', e);
     }

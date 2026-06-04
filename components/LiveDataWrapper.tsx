@@ -25,6 +25,15 @@ const LiveDataWrapper = ({ children, coinId, poolId, coin, coinOHLCData }: LiveD
   const [ohlcData, setOhlcData] = useState<OHLCData[]>(coinOHLCData ?? []);
 
   useEffect(() => {
+    if (wsTrades && wsTrades.length > 0) {
+      setTrades((prev) => {
+        const combined = [...wsTrades, ...prev];
+        return combined.slice(0, 50); // Keep last 50 trades
+      });
+    }
+  }, [wsTrades]);
+
+  useEffect(() => {
     if (coinOHLCData) setOhlcData(coinOHLCData);
   }, [coinOHLCData]);
 
@@ -108,12 +117,14 @@ const LiveDataWrapper = ({ children, coinId, poolId, coin, coinOHLCData }: LiveD
       />
       <Separator className="divider" />
 
+      {children}
+
       <div className="trend">
         <CandlestickChart
           coinId={coinId}
           data={ohlcData}
           liveOhlcv={ohlcv}
-          mode={isConnected ? 'live' : 'static'}
+          mode={isConnected ? 'live' : 'historical'}
           initialPeriod="daily"
           liveInterval={liveInterval}
           setLiveInterval={setLiveInterval}

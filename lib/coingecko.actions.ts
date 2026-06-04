@@ -56,10 +56,11 @@ export async function getPools(
         `/onchain/networks/${network}/tokens/${contractAddress}/pools`
       );
 
-      return poolData.data?.[0] ?? fallback;
+      if (poolData.data?.[0]) {
+        return poolData.data[0];
+      }
     } catch (error) {
       console.log(error);
-      return fallback;
     }
   }
 
