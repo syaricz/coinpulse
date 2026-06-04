@@ -140,6 +140,7 @@ interface Trade {
   type?: string;
   amount?: number;
   value?: number;
+  market?: string;
 }
 
 interface ExtendedPriceData {
@@ -154,22 +155,6 @@ interface ExtendedPriceData {
 
 interface WebSocketMessage {
   type?: string;
-  c?: string;
-  ch?: string;
-  i?: string;
-  p?: number;
-  pp?: number;
-  pu?: number;
-  m?: number;
-  v?: number;
-  vo?: number;
-  o?: number;
-  h?: number;
-  l?: number;
-  t?: number;
-  to?: number;
-  ty?: string;
-  channel?: string;
   identifier?: string;
 }
 

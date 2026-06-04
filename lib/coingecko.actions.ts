@@ -25,7 +25,7 @@ export async function fetcher<T>(
     headers: {
       'x-cg-demo-api-key': API_KEY,
       'Content-Type': 'application/json',
-    } as Record<string, string>,
+    },
     next: { revalidate },
   });
 
@@ -36,4 +36,38 @@ export async function fetcher<T>(
   }
 
   return response.json();
+}
+
+export async function getPools(
+  id: string,
+  network?: string | null,
+  contractAddress?: string | null
+): Promise<PoolData> {
+  const fallback: PoolData = {
+    id: '',
+    address: '',
+    name: '',
+    network: '',
+  };
+
+  if (network && contractAddress) {
+    try {
+      const poolData = await fetcher<{ data: PoolData[] }>(
+        `/onchain/networks/${network}/tokens/${contractAddress}/pools`
+      );
+
+      return poolData.data?.[0] ?? fallback;
+    } catch (error) {
+      console.log(error);
+      return fallback;
+    }
+  }
+
+  try {
+    const poolData = await fetcher<{ data: PoolData[] }>('/onchain/search/pools', { query: id });
+
+    return poolData.data?.[0] ?? fallback;
+  } catch {
+    return fallback;
+  }
 }
