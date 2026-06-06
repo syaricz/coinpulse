@@ -24,11 +24,13 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const trendingCoins = await fetcher<{ coins: TrendingCoin[] }>(
-    '/search/trending',
-    undefined,
-    300
-  );
+  let trendingCoins: { coins: TrendingCoin[] } = { coins: [] };
+
+  try {
+    trendingCoins = await fetcher<{ coins: TrendingCoin[] }>('/search/trending', undefined, 300);
+  } catch (error) {
+    console.error('Error fetching trending coins:', error);
+  }
 
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
